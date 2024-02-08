@@ -2,7 +2,7 @@
 
 {% block content %}
     <h3> {{ posts.title }} {{ posts.rate }} </h3><br>
-      <img src=/media/{{ posts.photo }}><br>
+      <img src=/media/{{ posts.photo }} width="300"><br>
     <i>{{  posts.title}} - {{ posts.content }}</i><br>
     <p><i>Автор: {{ posts.author }}</i></p>
     <p>{{ posts.created_at }}</p>
@@ -12,5 +12,11 @@
     <p> -<i>{{ review.text }}</i></p>
     <p>{{ review.created_at }}</p>
 {% endfor %}
+
+<form action="/post/{{ posts.id }}/review/" method="post">
+    {% csrf_token %}
+    {{ review_form.as_p }}
+    <input type="submit" value="Create">
+</form>
 
 {% endblock %}

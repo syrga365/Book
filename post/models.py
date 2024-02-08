@@ -17,12 +17,11 @@ class Book(models.Model):
 
 
 class Review(models.Model):
-    review_books = models.ForeignKey(
+    post = models.ForeignKey(
         'post.Book',
         on_delete=models.CASCADE,
-        related_name="review"
+        related_name='review'
     )
-
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
