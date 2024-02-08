@@ -19,7 +19,9 @@ from django.urls import path
 from post.views import (main_page_view,
                         hello_view,
                         current_date_view,
-                        goodbye_view
+                        goodbye_view,
+                        post_list_view,
+                        post_details_view,
 
 )
 
@@ -30,4 +32,6 @@ urlpatterns = [
     path('hello/', hello_view),
     path('current_date/', current_date_view),
     path('goodby/', goodbye_view),
+    path('post/', post_list_view),
+    path('post/<int:post_id>/', post_details_view),
 ]
