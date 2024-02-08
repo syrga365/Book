@@ -5,8 +5,8 @@ from post.models import Book, Category, Review
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['title', 'author', 'created_at']
-    fields = ["id", "title", "photo", "content", 'author', "rate", 'category', "created_at", "updated_at"]
+    list_display = ['user', 'title', 'author', 'created_at']
+    fields = ["id", "title", 'user', "photo", "content", 'author', "rate", 'category', "created_at", "updated_at"]
     readonly_fields = ["id", "created_at", "updated_at"]
 
 

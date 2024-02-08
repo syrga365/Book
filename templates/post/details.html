@@ -10,6 +10,7 @@
 <h4>Отзывы: </h4>
 {% for review in posts.review.all %}
     <p> -<i>{{ review.text }}</i></p>
+    <p>{{ review.user.username }}</p>
     <p>{{ review.created_at }}</p>
 {% endfor %}
 

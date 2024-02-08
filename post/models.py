@@ -6,6 +6,13 @@ class Category(models.Model):
 
 
 class Book(models.Model):
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='posts',
+        null=True
+
+    )
     title = models.CharField(max_length=100)
     photo = models.ImageField(upload_to="media/%Y/%m/%d", null=True)
     content = models.TextField()
@@ -17,6 +24,11 @@ class Book(models.Model):
 
 
 class Review(models.Model):
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        null=True
+    )
     post = models.ForeignKey(
         'post.Book',
         on_delete=models.CASCADE,

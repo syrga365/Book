@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from post.forms import PostCreateForm, ReviewForm, CategoryForm
 from post.models import Book, Category
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -29,10 +29,11 @@ def goodbye_view(request):
         return HttpResponse("Good bye, user!!!")
 
 
+@login_required
 def post_list_view(request):
     if request.method == 'GET':
         print(request.user)
-        posts = Book.objects.all()
+        posts = Book.objects.all().exclude(user=request.user)
         return render(request, "post/list.html",
                       context={'posts': posts})
 
@@ -60,6 +61,7 @@ def category_details_view(request, category_id):
                       context={'categories': categories, "posts": posts})
 
 
+@login_required
 def post_create_view(request):
     if request.method == "GET":
         context = {'form': PostCreateForm()
@@ -69,13 +71,16 @@ def post_create_view(request):
         form = PostCreateForm(request.POST, request.FILES)
 
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
             return redirect('list')
         context = {'form': form}
 
         return render(request, 'post/create.html', context=context)
 
 
+@login_required
 def review_create_view(request, post_id):
     if request.method == "POST":
         form = ReviewForm(request.POST)
@@ -83,11 +88,13 @@ def review_create_view(request, post_id):
         if form.is_valid():
             review = form.save(commit=False)
             review.post_id = post_id
+            review.user = request.user
             review.save()
 
         return redirect('details', post_id=post_id)
 
 
+@login_required
 def category_create_view(request):
     if request.method == 'GET':
         context = {"form": CategoryForm()}
