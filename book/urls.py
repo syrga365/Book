@@ -22,6 +22,8 @@ from post.views import (main_page_view,
                         goodbye_view,
                         post_list_view,
                         post_details_view,
+                        category_view,
+                        category_details_view
 
 )
 
@@ -34,4 +36,6 @@ urlpatterns = [
     path('goodby/', goodbye_view),
     path('post/', post_list_view),
     path('post/<int:post_id>/', post_details_view),
+    path('category/', category_view, name='category'),
+    path('category/<int:category_id>/', category_details_view),
 ]
