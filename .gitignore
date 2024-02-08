@@ -5,3 +5,4 @@ venv
 *.secret
 *.log
 /__pycache__/
+staticfiles
