@@ -7,6 +7,10 @@
     <p><i>Автор: {{ posts.author }}</i></p>
     <p>{{ posts.created_at }}</p>
 
+{% if has_change_permission %}
+    <a href="/post/{{ posts.id }}/update/">Update Post</a><br><br>
+{% endif %}
+
 <h4>Отзывы: </h4>
 {% for review in posts.review.all %}
     <p> -<i>{{ review.text }}</i></p>
