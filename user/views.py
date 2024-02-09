@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from user.forms import RegisterForm, LoginForm, VeryfyForm
+from user.forms import RegisterForm, LoginForm, VeryfyForm, ProfileForm
 from django.contrib.auth import authenticate, login, logout
 from user.models import Profile, SMSCodes
 from django.contrib.auth.decorators import login_required
@@ -99,18 +99,19 @@ def profile_view(request):
 
 @login_required
 def profile_update_view(request):
-    user_profile = request.user.profile
-
-    if request.method == 'GET':
-        return render(request, 'user/profile_update.html', {'form': RegisterForm()})
-    elif request.method == 'POST':
-        form = RegisterForm(request.POST, request.FILES, instance=user_profile)
-        if form.is_valid():
-            form.save()
-            return redirect('/profile/')
-        else:
-            form = RegisterForm(instance=user_profile)
-        return render(request, 'user/profile_update.html', {"form": form})
+    if request.method == "GET":
+        profile = Profile.objects.get(user=request.user)
+        form = ProfileForm(
+            initial={
+                'username': request.user.username,
+                'email': request.user.email,
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'avatar': profile.avatar,
+                'bio': profile.bio,
+            }
+        )
+    return render(request, 'user/profile_update.html', {'form': form })
 
 
 def logout_view(request):
