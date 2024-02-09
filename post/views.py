@@ -158,3 +158,15 @@ def category_create_view(request):
             "form": form
         }
         return render(request, 'post/category_create.html', context=context)
+
+
+@login_required
+def post_delete_view(request, post_id):
+    try:
+        posts = Book.objects.get(id=post_id)
+    except Book.DoesNotExist:
+        return HttpResponse('None')
+    if posts.user != request.user:
+        return HttpResponse('Permission denied', status=403)
+    posts.delete()
+    return redirect('list')

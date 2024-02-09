@@ -1,4 +1,6 @@
 import random
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from user.forms import RegisterForm, LoginForm, VeryfyForm
@@ -40,6 +42,7 @@ def register_view(request):
                 user=user,
                 code=code
             )
+            send_code_email(email, code)
             return redirect('veryfy')
 
         else:
@@ -81,23 +84,34 @@ def veryfy_view(request):
                 return render(request, 'user/veryfy.html', {'form': form})
 
 
+def send_code_email(email, code):
+    subject = 'Verification Code'
+    message = f'Your verification code is: {code}'
+    sender = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+
+    send_mail(subject, message, sender, recipient_list)
+
+
 def profile_view(request):
     return render(request, 'user/profile.html')
 
 
 @login_required
 def profile_update_view(request):
+    user_profile = request.user.profile
+
     if request.method == 'GET':
         return render(request, 'user/profile_update.html', {'form': RegisterForm()})
     elif request.method == 'POST':
-        profile = Profile.objects.get(user=request.user)
-        form = RegisterForm(request.POST, request.FILES, instance=profile)
+        form = RegisterForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
-            profile = form.save()
-            return redirect('profile')
+            form.save()
+            return redirect('/profile/')
         else:
-            form = RegisterForm(instance=profile)
-        return render(request, 'user/profile_update.html', {"form": form, 'profile': profile})
+            form = RegisterForm(instance=user_profile)
+        return render(request, 'user/profile_update.html', {"form": form})
+
 
 def logout_view(request):
     logout(request)

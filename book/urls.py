@@ -29,7 +29,8 @@ from post.views import (main_page_view,
                         post_create_view,
                         review_create_view,
                         category_create_view,
-                        post_update_view
+                        post_update_view,
+                        post_delete_view
 
                         )
 from user.views import register_view, login_view, profile_view, logout_view, veryfy_view, profile_update_view
@@ -48,6 +49,7 @@ urlpatterns = [
     path('category/<int:category_id>/', category_details_view),
     path('post/create/', post_create_view),
     path('post/<int:post_id>/review/', review_create_view, name='review'),
+    path('post/<int:post_id>/delete/', post_delete_view),
 
     path('category/create_category/', category_create_view),
 
