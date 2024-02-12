@@ -3,7 +3,9 @@
 {% block content %}
 <h3>Search</h3>
 
-<p><a href="?sort=title">Sort by title</a></p><br>
+<p><a href="?sort=created_at">Sort by created at</a></p>
+<p><a href="?sort=title">Sort by title </a></p><br>
+
 
 {% for category in categories %}
   <a href="?category={{ category.id }}">
@@ -17,13 +19,13 @@
 </form>
 
  <h3> Книги</h3>
-{% for book in posts %}
+{% for book in object_list %}
       <div class="card" style="width: 18rem;">
       <img src="/media/{{ book.photo }}" class="card-img-top" alt="...">
       <div class="card-body">
         <h4 class="card-title"> {{ book.title }}</h4>
           <p><i class="card-text">{{ book.author }}</i></p>
-        <a href="/post/{{ book.id }}/" class="btn btn-primary">Перейти</a>
+        <a href="/post2/{{ book.id }}/" class="btn btn-primary">Перейти</a>
       </div>
     </div>
 

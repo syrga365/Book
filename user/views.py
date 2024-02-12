@@ -1,12 +1,14 @@
 import random
+
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from user.forms import RegisterForm, LoginForm, VeryfyForm, ProfileForm
-from django.contrib.auth import authenticate, login, logout
-from user.models import Profile, SMSCodes
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+
+from user.forms import RegisterForm, LoginForm, VeryfyForm, ProfileForm
+from user.models import Profile, SMSCodes
 
 
 def register_view(request):
@@ -60,7 +62,7 @@ def login_view(request):
 
             if user:
                 login(request, user)
-                return redirect('list')
+                return redirect('post_list')
             else:
                 form.add_error(None, "Invalid credentials")
                 return render(request, 'user/login.html', {'form': form})
